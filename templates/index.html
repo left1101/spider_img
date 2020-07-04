@@ -1,0 +1,77 @@
+<!doctype html>
+<head>
+  <title>我哥给写的页面</title>
+  <style>
+    .img_we {
+        width: 200px;
+        height: 200px;
+        margin: 20px;
+    }
+  </style>
+  <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+  <div>
+    <span>请输入cookie：</span>
+    <input id="inputCookie" placeholder="请输入cookie" />
+  </div>
+  <div>
+    <span>请输入referer：</span>
+    <input id="inputReferer" placeholder="请输入referer" />
+  </div>
+  <div>
+    <span>请输入网页连接：</span>
+    <input id="inputLink" placeholder="请输入网页连接" />
+  </div>
+  <div>
+    <button onclick="queryClick()">查询</button>
+  </div>
+  <div style="margin-top: 10px;" id="text_content"></div>
+  <div style="margin-top: 10px;" id="img_content"></div>
+  <script>
+    function queryClick() {
+      console.log('我哥给写的页面', '爱我妹哦！！！');
+      var inputCookie = $('#inputCookie').val();
+      var inputReferer = $('#inputReferer').val();
+      var inputLink = $('#inputLink').val();
+      console.log(inputCookie, inputReferer, inputLink);
+      if (!inputCookie || !inputReferer || !inputLink) {
+        alert('请输入cookie、referer、网页连接哈...');
+        return;
+      }
+      // $('#content').text('我哥给写的页面');
+      $.post("/transform/img", {
+          inputCookie: inputCookie,
+          inputReferer: inputReferer,
+          inputLink: inputLink,
+      },
+      function(res, status){
+          console.log(res);
+          const data = res.data;
+          console.log(data);
+          $('#img_content').empty();
+          $('#text_content').empty();
+
+          if (data && data.list && data.list.length > 0) {
+            for (var i = 0; i < data.list.length; i ++) {
+              if (i === 0) {
+                continue;
+              }
+              var linkImg = document.createElement('img');
+              linkImg.src = data.list[i];
+              linkImg.setAttribute('class', 'img_we');
+              $('#img_content').append(linkImg);
+
+              var linkDiv = document.createElement('div');
+              linkDiv.innerText = data.list[i];
+              $('#text_content').append(linkDiv);
+            }
+          }
+          // $('#content').text('我哥给写的页面');
+          // JSON.parse
+          // alert("数据: \n" + data + "\n状态: " + status);
+      });
+    }
+  </script>
+</body>
+
