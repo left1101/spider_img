@@ -4,26 +4,6 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-@app.route('/')
-def get_index():
-   return render_template("index.html")
-
-@app.route('/transform/img', methods=['POST'])
-def transform():
-    print(request)
-    cookie = request.form['inputCookie']
-    referer = request.form['inputReferer']
-    url = request.form['inputLink']
-    imgs= get_content(url, cookie, referer)
-    # return jsonify({"code":1,"data":{"list":["//cbu01.alicdn.com/cms/upload/2016/790/696/2696097_1254399316.png","https://cbu01.alicdn.com/img/ibank/2017/698/258/4130852896_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/698/258/4130852896_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/605/080/4135080506_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/271/980/4135089172_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/852/078/4130870258_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/068/558/4130855860_248682925.jpg"]},"msg":"success"})
-    return jsonify({
-        "data": {
-            "list": imgs,
-        },
-        "msg": "success",
-        "code": 1,
-    })
-
 def get_data(url, cookie, referer):
     try:
         headers = {
@@ -63,6 +43,23 @@ def get_content(url, cookie, referer):
 
     return comments
 
+@app.route('/')
+def get_index():
+    # print('get_index')
+    return render_template("index.html")
 
-if __name__ == '__main__':
-   app.run()
+@app.route('/transform/img', methods=['POST'])
+def transform():
+    print(request)
+    cookie = request.form['inputCookie']
+    referer = request.form['inputReferer']
+    url = request.form['inputLink']
+    imgs= get_content(url, cookie, referer)
+    # return jsonify({"code":1,"data":{"list":["//cbu01.alicdn.com/cms/upload/2016/790/696/2696097_1254399316.png","https://cbu01.alicdn.com/img/ibank/2017/698/258/4130852896_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/698/258/4130852896_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/605/080/4135080506_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/271/980/4135089172_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/852/078/4130870258_248682925.jpg","https://cbu01.alicdn.com/img/ibank/2017/068/558/4130855860_248682925.jpg"]},"msg":"success"})
+    return jsonify({
+        "data": {
+            "list": imgs,
+        },
+        "msg": "success",
+        "code": 1,
+    })
