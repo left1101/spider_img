@@ -58,7 +58,14 @@ def get_content(url, cookie, referer):
 
     img_tags = soup.find_all('img')
     for section in img_tags:
-        src = section['src'].replace('.64x64', '')
+        # https://cbu01.alicdn.com/cms/upload/other/lazyload.png
+        src = section['src']
+        if src.find('lazyload') == -1:
+            src = src.replace('.64x64', '')
+            comments.append(src)
+            continue
+
+        src = section['data-lazy-src'].replace('.64x64', '')
         comments.append(src)
 
     return comments
